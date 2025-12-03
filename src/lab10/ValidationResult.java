@@ -23,7 +23,7 @@ public class ValidationResult {
         return errors.isEmpty();
     }
     public synchronized List<ValidationError> getErrors(){
-        return errors;
+        return new ArrayList<>(errors);//++
     }
     public static ValidationResult merge(ValidationResult a,ValidationResult b){
         ValidationResult out=new ValidationResult();

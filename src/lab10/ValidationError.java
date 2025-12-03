@@ -5,7 +5,7 @@
 package lab10;
 
 import java.util.List;
-
+import java.util.*;
 /**
  *
  * @author Abdallah
@@ -15,13 +15,15 @@ public class ValidationError {
     private final Type type;
     private final int index;
     private final int value;
-    private final List<String> locations;
+    private final Set<String> locations = new LinkedHashSet<>();  // Use LinkedHashSet to keep insertion order & avoid duplicates
     
-    public ValidationError(Type type, int index, int value, List<String> locations ) {
+    public ValidationError(Type type, int index, int value, List<String> initialLocations ) {
         this.type = type;
         this.index = index;
         this.value = value;
-        this.locations = locations;
+         if (initialLocations != null) {//++
+            this.locations.addAll(initialLocations); // duplicates automatically removed
+        }//++
     }
     
     public Type getType()
@@ -36,9 +38,16 @@ public class ValidationError {
     {
         return value;
     }
-    public List<String> getLocations()
-    {
-        return locations;
+    public List<String> getLocations() {
+        return new ArrayList<>(locations);
+    }
+    public void addLocation(String loc){
+        locations.add(loc);
+    }
+    public void addLocations(List<String>locs){
+          if (locs != null) {
+            locations.addAll(locs); // duplicates automatically removed
+        }
     }
     
     @Override

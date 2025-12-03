@@ -22,24 +22,28 @@ public class CSVLoader {
             int row = 0;
 
             while ((line = br.readLine()) != null && row < 9) {
-                String[] parts = line.trim().split(",");
+                String[] parts = line.trim().split("\\s*,\\s*|\\s+");
 
                 if (parts.length < 9) {
-                    throw new IOException("CSV row " + (row + 1) +
-                                          " has fewer than 9 columns.");
+                    throw new IOException("CSV row " + (row + 1)
+                            + " has fewer than 9 columns.");
                 }
 
                 for (int c = 0; c < 9; c++) {
-                    data[row][c] = Integer.parseInt(parts[c].trim());
+                    try {
+                        data[row][c] = Integer.parseInt(parts[c].trim());
+                    } catch (NumberFormatException ex) {
+                        throw new IOException("Invalid number at row " + (row + 1) + " col " + (c + 1), ex);
+                    }
+                   
                 }
-                row++;
+                  row++;
+                if (row < 9) {
+                    throw new IOException("CSV file has fewer than 9 rows.");
+                }
             }
 
-            if (row < 9) {
-                throw new IOException("CSV file has fewer than 9 rows.");
-            }
-        }
-
-        return new SudokuBoard(data);
+            return new SudokuBoard(data);
+        } 
     }
 }

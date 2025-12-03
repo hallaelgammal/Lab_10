@@ -30,9 +30,13 @@ public class RowValidator implements Validator {
             Map<Integer, List<String>> pos = new HashMap<>();
             for(int c=0; c<9; c++){
                 int v = board[r][c];
+                if (v == 0) continue;  //++
+                if(v < 1 || v > 9){//++
+                    pos.computeIfAbsent(v, k-> new ArrayList<>()).add(String.valueOf(c+1));//++
+                    continue;//++
+                }
                 
-                pos.computeIfAbsent(v, k-> new ArrayList<>()).add(String.valueOf(c+1));
-                 
+                 pos.computeIfAbsent(v, k-> new ArrayList<>()).add(String.valueOf(c+1)); 
             }
             for(Map.Entry<Integer, List<String>> e: pos.entrySet()){ // for cheecking duplicates
                 if(e.getValue().size() >1) {
