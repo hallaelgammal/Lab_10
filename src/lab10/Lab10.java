@@ -24,6 +24,7 @@ public class Lab10 {
 
     private static void testGameDriver(String csvFile) {
         
+        
         try {
             // Load and validate the board
             GameDriver driver = new GameDriver(csvFile);
@@ -35,6 +36,14 @@ public class Lab10 {
             } else {
                 System.out.println("Board is valid and complete: " + csvFile);
             }
+            System.out.println("\n--- Generating difficulty boards ---");
+
+            DifficultyBoards diff = driver.generateDifficultyBoards();
+
+            // Print + verify difficulty levels
+            printDifficulty("EASY (10 removed)", diff.getEasy(), 10);
+            printDifficulty("MEDIUM (20 removed)", diff.getMedium(), 20);
+            printDifficulty("HARD (25 removed)", diff.getHard(), 25); 
 
         } catch (InvalidSudokuException e) {
             // Board is invalid or failed to load
@@ -46,4 +55,33 @@ public class Lab10 {
             e.printStackTrace();
         }
     }
+    private static void printDifficulty(String title, int[][] board, int expectedZeros) {
+        System.out.println("\n===== " + title + " =====");
+        printBoard(board);
+
+        int zeroCount = countZeros(board);
+        System.out.println("Zeros found: " + zeroCount 
+                + " (expected: " + expectedZeros + ")");
+    }
+
+    private static void printBoard(int[][] board) {
+        for (int r = 0; r < 9; r++) {
+            for (int c = 0; c < 9; c++) {
+                System.out.print(board[r][c] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    private static int countZeros(int[][] board) {
+        int count = 0;
+        for (int r = 0; r < 9; r++) {
+            for (int c = 0; c < 9; c++) {
+                if (board[r][c] == 0)
+                    count++;
+            }
+        }
+        return count;
+    }
+    
 }

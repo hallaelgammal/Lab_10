@@ -5,6 +5,9 @@
 package lab10;
 import java.util.List;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
 /**
  *
  * @author Dell
@@ -48,5 +51,48 @@ public class GameDriver {
     public SudokuBoard getBoard() {
         return board;
     }
+    
+    private int[][] deepCopy(int[][] src) {   //
+    int[][] copy = new int[9][9];
+    for (int i = 0; i < 9; i++) {
+        copy[i] = src[i].clone();
+    }
+    return copy;
+}
+   
+    public DifficultyBoards generateDifficultyBoards() {
+        
+        int [][] solved = board.toArrayCopy(); //original solved board
+        
+        int [][] easy = deepCopy(solved);
+        int [][] medium = deepCopy(solved);
+        int [][] hard = deepCopy(solved);
+        
+         // --- EASY: remove 10 cells ---
+    removeCells(easy,10);
+
+    // --- MEDIUM: remove 20 cells ---
+    removeCells(medium,20);
+
+    // --- HARD: remove 25 cells ---
+    removeCells(hard,25);
+         
+         return new DifficultyBoards(easy, medium, hard);
+        
+       
+        
+    }
+    private void removeCells(int[][] board, int n) {
+    Set<Integer> used = new HashSet<>();
+    Random rand = new Random();
+    while (used.size() < n) {
+        int idx = rand.nextInt(81); // 0..80
+        if (!used.contains(idx)) {
+            used.add(idx);
+            board[idx / 9][idx % 9] = 0;
+        }
+    }
+}
+    
 
 }

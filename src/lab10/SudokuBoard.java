@@ -21,6 +21,7 @@ public class SudokuBoard {
     public int get(int r, int c) {
         return board[r][c];
     }
+    
 
     public int[][] toArrayCopy() {
         int[][] copy = new int[9][9];
