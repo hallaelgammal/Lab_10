@@ -35,15 +35,14 @@ public class CSVLoader {
                     } catch (NumberFormatException ex) {
                         throw new IOException("Invalid number at row " + (row + 1) + " col " + (c + 1), ex);
                     }
-                   
-                }
-                  row++;
-                if (row < 9) {
-                    throw new IOException("CSV file has fewer than 9 rows.");
-                }
-            }
 
-            return new SudokuBoard(data);
-        } 
+                }
+                row++;
+            }
+            if (row < 9) {
+                throw new IOException("CSV file has fewer than 9 rows.");
+            }
+        }
+         return new SudokuBoard(data);
     }
 }
