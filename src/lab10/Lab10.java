@@ -4,72 +4,45 @@
  */
 package lab10;
 
-/**
- *
- * @author Abdallah
- */
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
-
 public class Lab10 {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
 
         String validFile = "valid.csv";
         String invalidFile = "invalid.csv";
-        String incompleteFile ="incomplete.csv";
+        String incompleteFile = "incomplete.csv";
 
-        // ===== TEST 1: VALID BOARD =====
         System.out.println("===== TEST 1: VALID BOARD =====");
-        testBoard(validFile);
+        testGameDriver(validFile);
 
-        // ===== TEST 2: INVALID BOARD =====
         System.out.println("\n===== TEST 2: INVALID BOARD =====");
-        testBoard(invalidFile);
+        testGameDriver(invalidFile);
 
-        // ===== TEST 3: INCOMPLETE BOARD =====
         System.out.println("\n===== TEST 3: INCOMPLETE BOARD =====");
-        testBoard(incompleteFile);
+        testGameDriver(incompleteFile);
     }
 
-    private static void testBoard(String csvFile) throws InterruptedException {
-        int[][] board = readBoardFromCSV(csvFile);
-        if (board == null) {
-            System.out.println("Failed to read board from CSV: " + csvFile);
-            return;
-        }
+    private static void testGameDriver(String csvFile) {
+        try {
+            // Load and validate the board
+            GameDriver driver = new GameDriver(csvFile);
 
-        SudokuBoard b = new SudokuBoard(board);
-        SingleModeValidator v = new SingleModeValidator(b);
-        System.out.println(v.validate());
-    }
+            // Check for incomplete cells
+            SudokuBoard board = driver.getBoard();
+            if (board.hasEmptyCells()) {  // You need to implement this in SudokuBoard
+                System.out.println("Board is incomplete: " + csvFile);
+            } else {
+                System.out.println("Board is valid and complete: " + csvFile);
+            }
 
-    private static int[][] readBoardFromCSV(String filePath) {
-        List<int[]> rows = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] tokens = line.split(",");
-                if (tokens.length != 9) {
-                    System.out.println("Invalid row length: " + line);
-                    return null;
-                }
-                int[] row = new int[9];
-                for (int i = 0; i < 9; i++) {
-                    row[i] = Integer.parseInt(tokens[i].trim());
-                }
-                rows.add(row);
-            }
-            if (rows.size() != 9) {
-                System.out.println("CSV must have exactly 9 rows.");
-                return null;
-            }
-            return rows.toArray(new int[9][9]);
+        } catch (InvalidSudokuException e) {
+            // Board is invalid or failed to load
+            System.out.println("Board validation failed for " + csvFile + ":");
+            System.out.println(e.getMessage());
         } catch (Exception e) {
-            System.out.println("Error reading CSV: " + e.getMessage());
-            return null;
+            // Other unexpected errors
+            System.out.println("Unexpected error for " + csvFile + ":");
+            e.printStackTrace();
         }
     }
 }

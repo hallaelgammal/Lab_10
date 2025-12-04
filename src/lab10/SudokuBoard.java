@@ -29,7 +29,16 @@ public class SudokuBoard {
         }
         return copy;
     }
-
+    public boolean hasEmptyCells() {
+        for (int r = 0; r < 9; r++) {
+            for (int c = 0; c < 9; c++) {
+                if (board[r][c] == 0) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
