@@ -15,6 +15,8 @@ import java.util.Set;
 public class GameDriver {
 
     private SudokuBoard board;
+        // Initialize storage
+GameStorage storage = new GameStorage();
 
     /*
     * Loads and verifies a Sudoku board from a CSV file.
@@ -93,6 +95,21 @@ public class GameDriver {
         }
     }
 }
-    
+    // habiba donia
+public void generateAndSaveBoards() {
+        try {
+            DifficultyBoards boards = generateDifficultyBoards();
 
+            // Save boards by difficulty
+            storage.saveBoard(new SudokuBoard(boards.getEasy()), DifficultyEnum.EASY);
+            storage.saveBoard(new SudokuBoard(boards.getMedium()), DifficultyEnum.MEDIUM);
+            storage.saveBoard(new SudokuBoard(boards.getHard()), DifficultyEnum.HARD);
+
+            // Save the currently played game
+            storage.saveCurrentGame(board);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
