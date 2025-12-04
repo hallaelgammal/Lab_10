@@ -4,10 +4,16 @@
  */
 package lab10;
 
+import java.io.IOException;
+
 /**
  *
  * @author Abdallah
  */
-public class Controllable {
-    
+public interface Controllable {
+    void loadGame(DifficultyEnum level);
+    void generateFromSolved();
+    void VerifyCurrent();
+    void solveCurrent();
+    void handleUserAction(String action ) throws IOException;
 }
