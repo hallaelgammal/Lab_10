@@ -61,7 +61,15 @@ GameStorage storage = new GameStorage();
     }
     return copy;
 }
-   
+    //++
+   public String getDifficulty(){
+       int empty=board.countEmptyCells();
+       if(empty<=30)
+           return "Easy";
+       if(empty<=45)
+           return "Medium";
+       return "Hard";
+   }
     public DifficultyBoards generateDifficultyBoards() {
         
         int [][] solved = board.toArrayCopy(); //original solved board

@@ -42,6 +42,17 @@ public class SudokuBoard {
         }
         return false;
     }
+    //++
+    public int countEmptyCells(){
+        int count=0;
+        for(int r=0;r<9;r++){
+            for(int c=0;c<9;c++){
+                if(board[r][c]==0)
+                    count++;
+            }
+        }
+        return count;
+    }
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
